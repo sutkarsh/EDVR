@@ -3,7 +3,7 @@ name: 001_EDVRwoTSA_scratch_lr4e-4_600k_REDS_LrCAR4S
 use_tb_logger: true
 model: video_base
 distortion: noise
-gpu_ids: [0,1]
+gpu_ids: [0,1,2,3,4,5,6,7]
 
 #### datasets
 datasets:
@@ -13,8 +13,8 @@ datasets:
     interval_list: [1]
     random_reverse: false
     border_mode: false
-    dataroot_GT: /home/utkarsh/data/vimeo_90k_small/test/
-    dataroot_LQ: /home/utkarsh/data/vimeo_90k_small/test/
+    dataroot_GT: ~/data/train/ 
+    dataroot_LQ: ~/data/train/ 
     distortion: noise
     cache_keys: ~
 
@@ -29,12 +29,12 @@ datasets:
   val:
     name: ref_restoration
     mode: ref_restoration
-    dataroot_GT: /home/utkarsh/data/vimeo_90k_small/test/
-    dataroot_LQ: /home/utkarsh/data/vimeo_90k_small/test/
+    dataroot_GT: ~/data/test/ 
+    dataroot_LQ:  ~/data/test/ 
     distortion: noise
     cache_data: True
     N_frames: 2
-    disparity: 0
+    disparity: all
     padding: new_info
     
 #### network structures

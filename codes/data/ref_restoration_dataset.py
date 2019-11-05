@@ -28,6 +28,9 @@ class ReferenceRestorationDataset(data.Dataset):
         self.pairs = [p.split(" ") for p in im_files]
         assert len(self.pairs[0]) == 2, "Error in parsing imfiles."
         print("Found {} image pairs".format(len(self.pairs)))
+
+        if (self.opt["phase"] != "train"):
+            self.pairs = np.random.choice(self.pairs,size=500)
         
         self.degrade_func = getattr(degradation, self.opt['distortion'])
 

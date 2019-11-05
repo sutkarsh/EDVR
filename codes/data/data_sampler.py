@@ -9,6 +9,17 @@ from torch.utils.data.sampler import Sampler
 import torch.distributed as dist
 
 
+class fake_dataset(torch.utils.data.Dataset):
+    def __init__(self,*args, **kwargs):
+        pass
+    def __len__(self):
+        return 1000
+    def __getitem__(self,index):
+        return {'LQs': torch.rand(2,3,64,64), 'GT': torch.rand(3,256,256), 'key': str(torch.rand(1))}
+
+
+
+
 class DistIterSampler(Sampler):
     """Sampler that restricts data loading to a subset of the dataset.
 

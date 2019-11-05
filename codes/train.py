@@ -7,7 +7,7 @@ import logging
 import torch
 import torch.distributed as dist
 import torch.multiprocessing as mp
-from data.data_sampler import DistIterSampler
+from data.data_sampler import DistIterSampler, fake_dataset
 
 import options.options as option
 from utils import util
@@ -98,6 +98,38 @@ def main():
     # torch.backends.cudnn.deterministic = True
 
     #### create train and val dataloader
+    # dataset_ratio = 200  # enlarge the size of each epoch
+    # for phase, dataset_opt in opt['datasets'].items():
+    #     if phase == 'train':
+    #         train_set = create_dataset(dataset_opt)
+    #         train_size = int(math.ceil(len(train_set) / dataset_opt['batch_size']))
+    #         total_iters = int(opt['train']['niter'])
+    #         total_epochs = int(math.ceil(total_iters / train_size))
+    #         if opt['dist']:
+    #             train_sampler = DistIterSampler(train_set, world_size, rank, dataset_ratio)
+    #             total_epochs = int(math.ceil(total_iters / (train_size * dataset_ratio)))
+    #         else:
+    #             train_sampler = None
+    #         train_loader = create_dataloader(train_set, dataset_opt, opt, train_sampler)
+    #         if rank <= 0:
+    #             logger.info('Number of train images: {:,d}, iters: {:,d}'.format(
+    #                 len(train_set), train_size))
+    #             logger.info('Total epochs needed: {:d} for iters {:,d}'.format(
+    #                 total_epochs, total_iters))
+    #     elif phase == 'val':
+    #         val_set = create_dataset(dataset_opt)
+    #         val_loader = create_dataloader(val_set, dataset_opt, opt, None)
+    #         if rank <= 0:
+    #             logger.info('Number of val images in [{:s}]: {:d}'.format(
+    #                 dataset_opt['name'], len(val_set)))
+    #     else:
+    #         raise NotImplementedError('Phase [{:s}] is not recognized.'.format(phase))
+    # assert train_loader is not None #TODO utkarsh change this back to normal
+
+    ########
+    ########
+
+
     dataset_ratio = 200  # enlarge the size of each epoch
     for phase, dataset_opt in opt['datasets'].items():
         if phase == 'train':

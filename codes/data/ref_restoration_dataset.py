@@ -62,8 +62,8 @@ class ReferenceRestorationDataset(data.Dataset):
         # img_GT = original
 
 
-        #if self.opt["phase"] == "train":
-        #    img2, img1, img1_degraded = util.augment([img2,img1,img1_degraded], self.opt['use_flip'])
+        if (self.opt["phase"] == "train") and self.opt['use_flip']:
+            img2, img1, img1_degraded = util.augment180([img2,img1,img1_degraded])
 
         img_LQ = np.stack([img2,img1_degraded],axis=0)
         img_GT = img1

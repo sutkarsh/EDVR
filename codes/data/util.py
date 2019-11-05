@@ -163,6 +163,21 @@ def index_generation(crt_i, max_n, N, padding='reflection'):
 ####################
 
 
+def augment180(img_list):
+    """horizontal flip, vertical flip, and rotate 180 degrees"""
+    hflip = random.random() < 0.5
+    vflip = random.random() < 0.5
+
+    def _augment(img):
+        if hflip:
+            img = img[:, ::-1, :]
+        if vflip:
+            img = img[::-1, :, :]
+        return img
+
+    return [_augment(img) for img in img_list]
+
+
 def augment(img_list, hflip=True, rot=True):
     """horizontal flip OR rotate (0, 90, 180, 270 degrees)"""
     hflip = hflip and random.random() < 0.5

@@ -30,7 +30,7 @@ class ReferenceRestorationDataset(data.Dataset):
         print("Found {} image pairs".format(len(self.pairs)))
 
         if (self.opt["phase"] != "train"):
-            self.pairs = np.random.choice(self.pairs,size=500)
+            self.pairs = self.pairs[::350]
         
         self.degrade_func = getattr(degradation, self.opt['distortion'])
 

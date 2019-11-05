@@ -21,8 +21,8 @@ datasets:
     N_frames: 2
     use_shuffle: true
     n_workers: 3  # per GPU
-    batch_size: 16
-    disparity: 0
+    batch_size: 32
+    disparity: all
     use_flip: true
     use_rot: true
     color: RGB

@@ -36,8 +36,25 @@ def make_noise(sigma):
         return I + numpy.random.normal(size=I.shape) * sigma
     return noise
 
+def exposure(I):
+    assert len(I.shape) == 3
+    assert I.dtype in ['float32', 'float64']
+    gamma = numpy.exp(numpy.random.normal(0.0,0.3))
+    I = numpy.clip(I, 0.0, 1.0) ** gamma
+    r = numpy.exp(numpy.random.normal(0.0,0.3))
+    I = numpy.clip(I * r, 0.0, 1.0)
+    return I
+
+def chain(*f_list):
+    def g(x):
+        for f in f_list:
+            x = f(x)
+        return x
+    return g
+
 noise = make_noise(0.3)
 noise_1 = make_noise(0.1)
+noise_5 = make_noise(0.5)
 
 def downsample_4x_upsample(a):
     assert len(a.shape) == 3
@@ -93,6 +110,13 @@ def motion_blur(I):
     return numpy.dstack(tuple([convolve(I[:,:,channel], G) for channel in range(I.shape[2])]))
 
 def test():
+    import pylab
+    a=skimage.img_as_float(skimage.io.imread('../a.jpg'))
+    while True:
+        b=noise_exposure(a)
+        pylab.imshow(a); pylab.figure(); pylab.imshow(b); pylab.show()
+
+def test2():
     import pylab
     a=skimage.io.imread('../vimeo_90k_pairs_v3/train/disparity0/121585991_00001_00009_a.png')
     ap=resize_numpy(a)

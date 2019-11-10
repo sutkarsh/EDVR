@@ -33,6 +33,7 @@ class ReferenceRestorationDataset(data.Dataset):
             self.pairs = self.pairs[::350]
         
         self.degrade_func = getattr(degradation, self.opt['distortion'])
+        self.ref_degrade_func = degradation.exposure
 
         # for i in range(max_idx):
         #     self.data_info['idx'].append('{}/{}'.format(i, max_idx))
@@ -58,17 +59,13 @@ class ReferenceRestorationDataset(data.Dataset):
         img2 = img2/255.0
         
         img1_degraded = np.asarray(self.degrade_func(img1), 'float32')
-        # original = torch.from_numpy(img1).permute([2,0,1]) #Original
-        # reference = torch.from_numpy(img2).permute([2,0,1]) #Ref
-        # degraded = torch.from_numpy(img1_degraded).permute([2,0,1])
-        # img_LQ = torch.stack([reference,degraded], dim=0)  # concatenate channels
-        # img_GT = original
+        ref = np.asarray(self.ref_degrade_func(img2), 'floatt32')
 
 
         if (self.opt["phase"] == "train") and self.opt['use_flip']:
-            img2, img1, img1_degraded = util.augment180([img2,img1,img1_degraded])
+            ref, img1, img1_degraded = util.augment180([ref,img1,img1_degraded])
 
-        img_LQ = np.stack([img2,img1_degraded],axis=0)
+        img_LQ = np.stack([ref,img1_degraded],axis=0)
         img_GT = img1
         img_LQ = torch.from_numpy(np.ascontiguousarray(img_LQ)).permute(0,3,1,2)
         img_GT = torch.from_numpy(np.ascontiguousarray(img_GT)).permute(2,0,1)

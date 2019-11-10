@@ -59,7 +59,7 @@ class ReferenceRestorationDataset(data.Dataset):
         img2 = img2/255.0
         
         img1_degraded = np.asarray(self.degrade_func(img1), 'float32')
-        ref = np.asarray(self.ref_degrade_func(img2), 'floatt32')
+        ref = np.asarray(self.ref_degrade_func(img2), 'float32')
 
 
         if (self.opt["phase"] == "train") and self.opt['use_flip']:
